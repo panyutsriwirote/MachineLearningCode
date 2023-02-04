@@ -81,6 +81,8 @@ class DecisionTree:
 
 if __name__ == "__main__":
 
+    # PLayTennis
+
     EXAMPLES = [
         {"Outlook": "Sunny", "Temperature": "Hot", "Humidity": "High", "Wind": "Weak", "PlayTennis": "No"},
         {"Outlook": "Sunny", "Temperature": "Hot", "Humidity": "High", "Wind": "Strong", "PlayTennis": "No"},
@@ -104,3 +106,34 @@ if __name__ == "__main__":
     NEW_INSTANCE = {"Outlook": "Sunny", "Temperature": "Hot", "Humidity": "High", "Wind": "Strong"}
     print(f"Classify: {NEW_INSTANCE}")
     print(f"Classification: {DECISION_TREE.classify(NEW_INSTANCE)}")
+
+    #######################################################################################################################
+
+    # # EnjoySport
+
+    # EXAMPLES = [
+    #     {"Sky": "Sunny", "AirTemp": "Hot", "Humidity": "Normal", "Wind": "Strong", "Water": "Warm", "Forecast": "Same", "EnjoySport": "Yes"},
+    #     {"Sky": "Sunny", "AirTemp": "Hot", "Humidity": "High", "Wind": "Strong", "Water": "Warm", "Forecast": "Same", "EnjoySport": "Yes"},
+    #     {"Sky": "Rainy", "AirTemp": "Cold", "Humidity": "High", "Wind": "Strong", "Water": "Warm", "Forecast": "Change", "EnjoySport": "No"},
+    #     {"Sky": "Sunny", "AirTemp": "Hot", "Humidity": "High", "Wind": "Strong", "Water": "Cool", "Forecast": "Change", "EnjoySport": "Yes"},
+    #     {"Sky": "Sunny", "AirTemp": "Hot", "Humidity": "Normal", "Wind": "Weak", "Water": "Warm", "Forecast": "Same", "EnjoySport": "No"},
+    # ]
+
+    # DECISION_TREE = DecisionTree(EXAMPLES, "EnjoySport")
+    # DECISION_TREE.show()
+
+    #######################################################################################################################
+
+    # # Random
+
+    # EXAMPLES = [
+    #     {"a1": "T", "a2": "T", "Classification": "+"},
+    #     {"a1": "T", "a2": "T", "Classification": "+"},
+    #     {"a1": "T", "a2": "F", "Classification": "-"},
+    #     {"a1": "F", "a2": "F", "Classification": "+"},
+    #     {"a1": "F", "a2": "T", "Classification": "-"},
+    #     {"a1": "F", "a2": "T", "Classification": "-"},
+    # ]
+
+    # DECISION_TREE = DecisionTree(EXAMPLES, "Classification")
+    # DECISION_TREE.show()
