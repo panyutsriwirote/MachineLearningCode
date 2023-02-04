@@ -99,7 +99,8 @@ if __name__ == "__main__":
     ]
 
     DECISION_TREE = DecisionTree(EXAMPLES, "PlayTennis")
+    DECISION_TREE.show()
 
     NEW_INSTANCE = {"Outlook": "Sunny", "Temperature": "Hot", "Humidity": "High", "Wind": "Strong"}
-    print(DECISION_TREE.classify(NEW_INSTANCE))
-    DECISION_TREE.show()
+    print(f"Classify: {NEW_INSTANCE}")
+    print(f"Classification: {DECISION_TREE.classify(NEW_INSTANCE)}")
