@@ -14,7 +14,7 @@ class Node:
             test_attribute, children, default_value = self.classifier
             return children.get(instance.get(test_attribute, default_value), children["__other__"]).classify(instance)
 
-    def stringify(self, indent_level: int):
+    def stringify(self, indent_level: int) -> str:
         if isinstance(self.classifier, str):
             return self.classifier
         else:
