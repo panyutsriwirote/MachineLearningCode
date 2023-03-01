@@ -7,7 +7,7 @@ def LinearRegression(data: list[tuple[float, float]], batch_size: int, num_epoch
     """
     y = ax + b
     """
-    a, b = 0, 0
+    a = b = 0
     h: Hypothesis = lambda x: a * x + b
     for epoch in range(1, num_epochs + 1):
         print(f"Epoch {epoch}:\n")
