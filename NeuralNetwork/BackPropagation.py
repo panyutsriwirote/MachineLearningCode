@@ -4,15 +4,18 @@ from math import exp
 from typing import Callable
 from tqdm import tqdm
 
-ActivationFunc = Callable[[float], float]
-
 class Network:
 
+    Function = Callable[[float], float]
+    # activation functions and their derivatives
+    activation: dict[str, tuple[Function, Function]] = {
+        "sigmoid": (lambda x: 1 / (1 + exp(-x)), lambda o: o * (1 - o))
+    }
     random_weight = partial(uniform, -1, 1)
 
-    def __init__(self, input_len: int, hidden_len: int, output_len: int, activation: ActivationFunc):
+    def __init__(self, input_len: int, hidden_len: int, output_len: int, activation_func_name: str):
         self.structure = (input_len, hidden_len, output_len)
-        self.activate = activation
+        self.activate, self.derivative = Network.activation[activation_func_name]
         self.weights = (
             [[Network.random_weight() for _ in range(input_len + 1)] for _ in range(hidden_len)], # hidden weight
             [[Network.random_weight() for _ in range(hidden_len + 1)] for _ in range(output_len)] # output weight
@@ -63,10 +66,10 @@ class Network:
                     self.calculate(input_values)
                     # output delta
                     for i, (o, t) in enumerate(zip(self.inter_values[1], target_outputs)):
-                        self.deltas[1][i] = o * (1 - o) * (t - o)
+                        self.deltas[1][i] = self.derivative(o) * (t - o)
                     # hidden delta
                     for i, o in enumerate(self.inter_values[0][:-1]):
-                        self.deltas[0][i] = o * (1 - o) * sum(self.weights[1][k][i] * self.deltas[1][k] for k in range(output_len))
+                        self.deltas[0][i] = self.derivative(o) * sum(self.weights[1][k][i] * self.deltas[1][k] for k in range(output_len))
                     # update gradients
                     for i in range(output_len):
                         for j in range(hidden_len + 1):
@@ -91,8 +94,6 @@ class Network:
 
 if __name__ == "__main__":
 
-    sigmoid: ActivationFunc = lambda x: 1 / (1 + exp(-x))
-
     print("XOR")
     XOR = [
         ([1.0,1.0],[0.0]),
@@ -100,8 +101,8 @@ if __name__ == "__main__":
         ([0.0,1.0],[1.0]),
         ([0.0,0.0],[0.0])
     ]
-    network = Network(2, 2, 1, sigmoid)
-    network.learn(XOR, batch_size=4, num_epochs=10000, learning_rate=1)
+    network = Network(2, 2, 1, "sigmoid")
+    network.learn(XOR, batch_size=4, num_epochs=10000, learning_rate=10)
     prediction = [1 if x > 0.5 else 0 for x in network.predict([1,1])]
     print(f"1 XOR 1 -> {[round(x, 2) for x in network.inter_values[0][:-1]]} -> {prediction}")
     prediction = [1 if x > 0.5 else 0 for x in network.predict([1,0])]
@@ -122,7 +123,7 @@ if __name__ == "__main__":
         ([0, 0, 0, 0, 0, 0, 1.0, 0], [0, 0, 0, 0, 0, 0, 1.0, 0]),
         ([0, 0, 0, 0, 0, 0, 0, 1.0], [0, 0, 0, 0, 0, 0, 0, 1.0]),
     ]
-    network = Network(8, 2, 8, sigmoid)
+    network = Network(8, 2, 8, "sigmoid")
     network.learn(IDENTITY, batch_size=8, num_epochs=10000, learning_rate=10)
     prediction = [1 if x > 0.5 else 0 for x in network.predict([1.0, 0, 0, 0, 0, 0, 0, 0])]
     print(f"1 -> {[round(x, 2) for x in network.inter_values[0][:-1]]} -> {prediction}")
